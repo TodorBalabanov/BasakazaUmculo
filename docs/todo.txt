@@ -1,0 +1,9 @@
+-> Implement music categories for a game like guess melody category.
+
+-> Use Ant for building process.
+
+-> Investigate this project: http://sourceforge.net/projects/musicgenie
+
+-> Investigate why stored files are not playing correct in regular MIDI players.
+
+-> Review all constants and reorganize some of them.
