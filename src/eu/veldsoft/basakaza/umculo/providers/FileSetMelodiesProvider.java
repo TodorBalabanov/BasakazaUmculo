@@ -24,7 +24,6 @@
 package eu.veldsoft.basakaza.umculo.providers;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Vector;
 
 import eu.veldsoft.basakaza.umculo.base.Melody;
@@ -38,11 +37,16 @@ import eu.veldsoft.basakaza.umculo.base.Melody;
  * 
  * @date 30 May 2014
  */
-public class FileSetMelodiesProvider {
+public class FileSetMelodiesProvider implements MelodySetProvider {
 	/**
-	 * Project subfolder for molody files.
+	 * Project sub folder for melody files.
 	 */
-	private static String TEXT_MELODIES_FOLDER = "../melodies/";
+	private String textMelodiesFolder = "";
+
+	public FileSetMelodiesProvider(String textMelodiesFolder) {
+		super();
+		this.textMelodiesFolder = textMelodiesFolder;
+	}
 
 	/**
 	 * Provide set of melodies from list of files.
@@ -55,26 +59,32 @@ public class FileSetMelodiesProvider {
 	 * 
 	 * @date 04 Jun 2014
 	 */
-	public static Vector<Melody> provide() {
+	@Override
+	public Vector<Melody> provide() {
 		Vector<Melody> melodies = new Vector<Melody>();
 
-		String filesList[] = (new File(TEXT_MELODIES_FOLDER)).list();
+		String filesList[] = (new File(textMelodiesFolder)).list();
 
 		Melody melody = null;
 		for (int i = 0; filesList != null && i < filesList.length; i++) {
-			if ((new File(TEXT_MELODIES_FOLDER + filesList[i])).isFile() == true) {
+			if ((new File(textMelodiesFolder + filesList[i])).isFile() == true) {
 				try {
-					melody = FileMelodyProvider.provide(TEXT_MELODIES_FOLDER + filesList[i]);
+					melody = (new FileMelodyProvider(textMelodiesFolder + filesList[i])).provide();
 					melody.setId(Melody.getUniqueId());
 					melodies.add(melody);
 				} catch (NotValidDescriptorFileException ex) {
 					ex.printStackTrace();
-				} catch (IOException ex) {
+				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
 			}
 		}
 
 		return (melodies);
+	}
+
+	@Override
+	public Vector<Melody> provide(int size) {
+		return provide();
 	}
 }

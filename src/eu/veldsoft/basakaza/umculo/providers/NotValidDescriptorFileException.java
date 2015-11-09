@@ -33,7 +33,7 @@ package eu.veldsoft.basakaza.umculo.providers;
  * 
  * @date 29 May 2014
  */
-public class NotValidDescriptorFileException extends Exception {
+class NotValidDescriptorFileException extends RuntimeException {
 	/**
 	 * Default serial version uid.
 	 */

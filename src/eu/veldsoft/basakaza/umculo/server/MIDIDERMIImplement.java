@@ -40,7 +40,7 @@ import eu.veldsoft.basakaza.umculo.common.MIDIDERMITask;
  * 
  * @date 22 May 2014
  */
-public class MIDIDERMIImplement extends UnicastRemoteObject implements MIDIDERMIInterface {
+class MIDIDERMIImplement extends UnicastRemoteObject implements MIDIDERMIInterface {
 	/**
 	 * Default serial version uid.
 	 */

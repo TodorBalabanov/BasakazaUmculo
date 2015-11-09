@@ -43,7 +43,7 @@ import eu.veldsoft.basakaza.umculo.providers.RandomSetMelodiesProvider;
  * 
  * @date 30 May 2014
  */
-public class MelodyPool {
+class MelodyPool {
 	/**
 	 * Min pool subset size.
 	 */
@@ -127,19 +127,19 @@ public class MelodyPool {
 		pool.clear();
 
 		if (randomMelodiesAmount > 0) {
-			addMelodies(RandomSetMelodiesProvider.provide(randomMelodiesAmount));
+			addMelodies((new RandomSetMelodiesProvider()).provide(randomMelodiesAmount));
 		}
 
 		if (fractalMelodiesAmount > 0) {
-			addMelodies(FractalSetMelodiesProvider.provide(fractalMelodiesAmount));
+			addMelodies((new FractalSetMelodiesProvider()).provide(fractalMelodiesAmount));
 		}
 
 		if (loadMelodiesFromDatabase = true) {
-			addMelodies(DatabaseSetMelodiesProvider.provide());
+			addMelodies((new DatabaseSetMelodiesProvider()).provide());
 		}
 
 		if (loadMelodiesFromFiles = true) {
-			addMelodies(FileSetMelodiesProvider.provide());
+			addMelodies((new FileSetMelodiesProvider("../melodies/")).provide());
 		}
 	}
 

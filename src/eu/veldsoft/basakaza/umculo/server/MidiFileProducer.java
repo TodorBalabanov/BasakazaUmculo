@@ -38,7 +38,7 @@ import eu.veldsoft.basakaza.umculo.base.Melody;
  * 
  * @date 04 Jun 2014
  */
-public class MidiFileProducer {
+class MidiFileProducer {
 	/**
 	 * Project subfolder for saving files.
 	 */

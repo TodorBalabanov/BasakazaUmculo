@@ -36,7 +36,7 @@ import eu.veldsoft.basakaza.umculo.base.Note;
  * 
  * @date 29 May 2014
  */
-public class RandomMelodyProvider {
+class RandomMelodyProvider implements MelodyProvider {
 	/**
 	 * Min melody sequence size for random generation.
 	 */
@@ -60,7 +60,8 @@ public class RandomMelodyProvider {
 	 * 
 	 * @date 29 May 2014
 	 */
-	public static Melody provide() {
+	@Override
+	public Melody provide() {
 		return (provide(MIN_RANDOM_SEQUENCE + (int) (Math.random() * (MAX_RANDOM_SEQUENCE - MIN_RANDOM_SEQUENCE + 1))));
 	}
 
@@ -81,7 +82,8 @@ public class RandomMelodyProvider {
 	 * 
 	 * @date 29 May 2014
 	 */
-	public static Melody provide(int length) {
+	@Override
+	public Melody provide(int length) {
 		Melody melody = new Melody();
 
 		for (int i = 0; i < length; i++)

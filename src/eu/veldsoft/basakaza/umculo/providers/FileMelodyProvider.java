@@ -25,7 +25,6 @@ package eu.veldsoft.basakaza.umculo.providers;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.StringTokenizer;
 
 import eu.veldsoft.basakaza.umculo.base.Melody;
@@ -51,7 +50,9 @@ import eu.veldsoft.basakaza.umculo.base.Note;
  * 
  * @date 29 May 2014
  */
-public class FileMelodyProvider {
+class FileMelodyProvider implements MelodyProvider {
+	private String fileName = "";
+
 	private static Note parseNote(String string) throws NotValidDescriptorFileException {
 		String token = string;
 
@@ -144,6 +145,11 @@ public class FileMelodyProvider {
 		return (new Note(note, 0, duration, 64));
 	}
 
+	public FileMelodyProvider(String fileName) {
+		super();
+		this.fileName = fileName;
+	}
+
 	/**
 	 * Create melody as sequence of music notes by parsing descriptor file. By
 	 * this way system can be easy populated with a lot of melodies composed by
@@ -163,18 +169,23 @@ public class FileMelodyProvider {
 	 * 
 	 * @date 29 May 2014
 	 */
-	public static Melody provide(String fileName) throws NotValidDescriptorFileException, IOException {
+	@Override
+	public Melody provide() {
 		// TODO Better file format description as documentation is needed.
 		Melody melody = new Melody();
 
 		String melodyText = "";
 
-		BufferedReader in = new BufferedReader(new FileReader(fileName));
-		String line = null;
-		while ((line = in.readLine()) != null) {
-			melodyText += line;
+		try {
+			BufferedReader in = new BufferedReader(new FileReader(fileName));
+			String line = null;
+			while ((line = in.readLine()) != null) {
+				melodyText += line;
+			}
+			in.close();
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
 		}
-		in.close();
 
 		StringTokenizer tokenizer = new StringTokenizer(melodyText, " ", false);
 
@@ -223,5 +234,10 @@ public class FileMelodyProvider {
 		}
 
 		return (melody);
+	}
+
+	@Override
+	public Melody provide(int length) {
+		return provide();
 	}
 }

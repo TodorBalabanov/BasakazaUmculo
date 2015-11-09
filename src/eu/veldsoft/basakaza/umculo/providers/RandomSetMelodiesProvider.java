@@ -37,7 +37,7 @@ import eu.veldsoft.basakaza.umculo.base.Population;
  * 
  * @date 30 May 2014
  */
-public class RandomSetMelodiesProvider {
+public class RandomSetMelodiesProvider implements MelodySetProvider {
 	/**
 	 * Provide random set of melodies.
 	 * 
@@ -49,7 +49,8 @@ public class RandomSetMelodiesProvider {
 	 * 
 	 * @date 30 May 2014
 	 */
-	public static Vector<Melody> provide() {
+	@Override
+	public Vector<Melody> provide() {
 		return (provide(Population.MIN_RANDOM_POPULATION + (int) (Math.random() * (Population.MAX_RANDOM_POPULATION - Population.MIN_RANDOM_POPULATION + 1))));
 	}
 
@@ -67,12 +68,13 @@ public class RandomSetMelodiesProvider {
 	 * 
 	 * @date 30 May 2014
 	 */
-	public static Vector<Melody> provide(int size) {
+	@Override
+	public Vector<Melody> provide(int size) {
 		Vector<Melody> melodies = new Vector<Melody>();
 
 		Melody melody = null;
 		for (int i = 0; i < size; i++) {
-			melody = RandomMelodyProvider.provide();
+			melody = (new RandomMelodyProvider()).provide();
 			melody.setId(Melody.getUniqueId());
 
 			melodies.add(melody);

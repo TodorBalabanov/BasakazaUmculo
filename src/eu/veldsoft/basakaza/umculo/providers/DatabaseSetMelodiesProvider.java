@@ -37,7 +37,7 @@ import eu.veldsoft.basakaza.umculo.database.DatabaseMediator;
  * 
  * @date 30 May 2014
  */
-public class DatabaseSetMelodiesProvider {
+public class DatabaseSetMelodiesProvider implements MelodySetProvider {
 	/**
 	 * Provide set of melodies from database.
 	 * 
@@ -49,7 +49,13 @@ public class DatabaseSetMelodiesProvider {
 	 * 
 	 * @date 24 Jun 2014
 	 */
-	public static Vector<Melody> provide() {
-		return (DatabaseMediator.loadMelodies());
+	@Override
+	public Vector<Melody> provide() {
+		return ((new DatabaseMediator()).loadMelodies());
+	}
+
+	@Override
+	public Vector<Melody> provide(int size) {
+		return provide();
 	}
 }

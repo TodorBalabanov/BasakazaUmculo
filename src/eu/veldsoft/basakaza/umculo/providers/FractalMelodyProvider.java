@@ -36,7 +36,7 @@ import eu.veldsoft.basakaza.umculo.base.Note;
  * 
  * @date 30 May 2014
  */
-public class FractalMelodyProvider {
+class FractalMelodyProvider implements MelodyProvider {
 	/**
 	 * Min melody sequence size for random generation.
 	 */
@@ -59,7 +59,8 @@ public class FractalMelodyProvider {
 	 * 
 	 * @date 29 May 2014
 	 */
-	public static Melody provide() {
+	@Override
+	public Melody provide() {
 		return (provide(MIN_FRACTAL_SEQUENCE + (int) (Math.random() * (MAX_FRACTAL_SEQUENCE - MIN_FRACTAL_SEQUENCE + 1))));
 	}
 
@@ -79,7 +80,8 @@ public class FractalMelodyProvider {
 	 * 
 	 * @date 29 May 2014
 	 */
-	public static Melody provide(int length) {
+	@Override
+	public Melody provide(int length) {
 		Melody melody = new Melody();
 
 		// TODO Better fractal formula can be implemented.
