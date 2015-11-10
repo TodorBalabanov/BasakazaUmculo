@@ -23,18 +23,12 @@
 
 package eu.veldsoft.basakaza.umculo.base;
 
-import java.awt.Color;
-import java.awt.Graphics;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.Serializable;
 import java.util.Vector;
-
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.Sequencer;
 
 /**
  * Differential evolution population class. Implementation of genetic algorithm
@@ -49,70 +43,6 @@ import javax.sound.midi.Sequencer;
  * @date 22 May 2014
  */
 public class Population implements Cloneable, Serializable {
-	/**
-	 * Painter is checking for playing sequence and do visual effects according
-	 * to melody.
-	 * 
-	 * @author Todor Balabanov
-	 * 
-	 * @email todor.balabanov@gmail.com
-	 * 
-	 * @date 15 Jun 2014
-	 */
-	private class Painter extends Thread {
-		/**
-		 * Delay for redraw in milliseconds.
-		 */
-		private static final int REDRAW_DELAY = 60;
-
-		/**
-		 * Default run method of the tread.
-		 * 
-		 * @author Todor Balabanov
-		 * 
-		 * @email todor.balabanov@gmail.com
-		 * 
-		 * @date 15 Jun 2014
-		 */
-		public void run() {
-			while (true) {
-				if (g != null && sequencer != null && sequencer.isRunning() == true) {
-					double position = (double) sequencer.getMicrosecondPosition() / (double) sequencer.getMicrosecondLength();
-
-					Note note = melodyPaying.getNoteOn(position);
-
-					if (note != null) {
-						int red = g.getColor().getRed();
-						int green = g.getColor().getGreen();
-						int blue = g.getColor().getBlue();
-						g.setColor(new Color((red + note.getNote()) % 256, (green + note.getVelocity()) % 256, (blue + note.getDuration()) % 256));
-					}
-
-					int x = (int) (g.getClipBounds().x + ((double) sequencer.getMicrosecondPosition() / (double) sequencer.getMicrosecondLength()) * g.getClipBounds().width);
-					int y = (int) (g.getClipBounds().y + ((double) sequencer.getMicrosecondLength() / (double) sequencer.getMicrosecondPosition()) + Math.random() * g.getClipBounds().height) % g.getClipBounds().height;
-
-					g.drawLine(x - 2, y, x - 2, y);
-					g.drawLine(x, y - 2, x, y - 2);
-					g.drawLine(x - 1, y, x - 1, y);
-					g.drawLine(x, y - 1, x, y - 1);
-					g.drawLine(x, y, x, y);
-					g.drawLine(x + 1, y, x + 1, y);
-					g.drawLine(x, y + 1, x, y + 1);
-					g.drawLine(x + 2, y, x + 2, y);
-					g.drawLine(x, y + 2, x, y + 2);
-				}
-
-				try {
-					Thread.sleep(REDRAW_DELAY);
-				} catch (InterruptedException ex) {
-					/*
-					 * It does not matter if thread is interrupted during
-					 * sleeping mode.
-					 */
-				}
-			}
-		}
-	}
 
 	/**
 	 * Default serial version uid.
@@ -158,16 +88,6 @@ public class Population implements Cloneable, Serializable {
 	 * Handle to the melody which is playing.
 	 */
 	private Melody melodyPaying = null;
-
-	/**
-	 * Sequencer object for melody playing.
-	 */
-	private Sequencer sequencer = null;
-
-	/**
-	 * Graphics context to visualize music information.
-	 */
-	private Graphics g = null;
 
 	/**
 	 * Constructor without parameters. Internal structure is created during
@@ -308,28 +228,29 @@ public class Population implements Cloneable, Serializable {
 
 			ByteArrayInputStream bai = new ByteArrayInputStream(bytes);
 
-			try {
-				sequencer = MidiSystem.getSequencer();
-				Sequence sequence = MidiSystem.getSequence(new DataInputStream(bai));
-
-				sequencer.open();
-				sequencer.setSequence(sequence);
-
-				Painter painter = new Painter();
-				painter.start();
-				sequencer.start();
-
-				Thread.sleep(sequencer.getMicrosecondLength() / 1000);
-				Thread.sleep(TIME_BEFORE_NEXT_MELODY);
-
-				sequencer.stop();
-				sequencer.close();
-				painter.interrupt();
-
-				sequencer = null;
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
+			//TODO Play and visualize melody.
+//			try {
+//				sequencer = MidiSystem.getSequencer();
+//				Sequence sequence = MidiSystem.getSequence(new DataInputStream(bai));
+//
+//				sequencer.open();
+//				sequencer.setSequence(sequence);
+//
+//				Painter painter = new Painter();
+//				painter.start();
+//				sequencer.start();
+//
+//				Thread.sleep(sequencer.getMicrosecondLength() / 1000);
+//				Thread.sleep(TIME_BEFORE_NEXT_MELODY);
+//
+//				sequencer.stop();
+//				sequencer.close();
+//				painter.interrupt();
+//
+//				sequencer = null;
+//			} catch (Exception ex) {
+//				ex.printStackTrace();
+//			}
 		}
 	}
 
@@ -458,21 +379,5 @@ public class Population implements Cloneable, Serializable {
 		population.size = size;
 
 		return (population);
-	}
-
-	/**
-	 * Set active graphics context.
-	 * 
-	 * @param g
-	 *            Graphics context.
-	 * 
-	 * @author Todor Balabanov
-	 * 
-	 * @email todor.balabanov@gmail.com
-	 * 
-	 * @date 15 Jun 2014
-	 */
-	public void setGraphics(Graphics g) {
-		this.g = g;
 	}
 }

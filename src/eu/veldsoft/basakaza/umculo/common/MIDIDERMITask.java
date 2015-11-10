@@ -136,22 +136,6 @@ public class MIDIDERMITask implements Serializable {
 	}
 
 	/**
-	 * Set active graphics context.
-	 * 
-	 * @param g
-	 *            Graphics context.
-	 * 
-	 * @author Todor Balabanov
-	 * 
-	 * @email todor.balabanov@gmail.com
-	 * 
-	 * @date 15 Jun 2014
-	 */
-	public void setGraphics(Graphics g) {
-		population.setGraphics(g);
-	}
-
-	/**
 	 * Number of evolution epochs getter.
 	 * 
 	 * @return Number of epochs.
