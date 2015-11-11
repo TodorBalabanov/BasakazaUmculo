@@ -24,6 +24,8 @@
 package eu.veldsoft.basakaza.umculo.base;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Vector;
 
 /**
@@ -46,6 +48,11 @@ public class Melody implements Cloneable, Serializable {
 	 */
 	private static final long MAX_TIME_MIDI_CONSTRUCTION = 100000L;
 
+	/**
+	 * Notes should be in proper order according offset of the beginning.
+	 */
+	private Comparator<Note> comparator = new NoteOffsetComparator<Note>();
+	
 	/**
 	 * Sequence of music notes.
 	 */
@@ -141,25 +148,7 @@ public class Melody implements Cloneable, Serializable {
 	 * @date 22 May 2014
 	 */
 	public void sort() {
-		Note a, b;
-		boolean done = false;
-
-		while (done == false) {
-			done = true;
-
-			for (int i = 0; i < sequence.size() - 1; i++) {
-				a = sequence.elementAt(i);
-				b = sequence.elementAt(i + 1);
-
-				if (a.getOffset() > b.getOffset()) {
-					sequence.removeElementAt(i);
-					sequence.insertElementAt(b, i);
-					sequence.removeElementAt(i + 1);
-					sequence.insertElementAt(a, i + 1);
-					done = false;
-				}
-			}
-		}
+		Collections.sort(sequence, comparator);
 	}
 
 	/**

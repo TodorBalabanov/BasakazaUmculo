@@ -51,12 +51,12 @@ interface MelodySetProvider {
 	public Vector<Melody> provide();
 
 	/**
-	 * Provide random set of melodies.
+	 * Provide set of melodies.
 	 * 
 	 * @param size
 	 *            Number of melodies.
 	 * 
-	 * @return Random set of melodies.
+	 * @return Set of melodies.
 	 * 
 	 * @author Todor Balabanov
 	 * 

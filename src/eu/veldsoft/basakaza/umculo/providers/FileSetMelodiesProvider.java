@@ -43,6 +43,18 @@ public class FileSetMelodiesProvider implements MelodySetProvider {
 	 */
 	private String textMelodiesFolder = "";
 
+	/**
+	 * Constructor with parameter of the folder location.
+	 * 
+	 * @param textMelodiesFolder
+	 *            Path to the folder with files.
+	 * 
+	 * @author Todor Balabanov
+	 * 
+	 * @email todor.balabanov@gmail.com
+	 * 
+	 * @date 11 Nov 2015
+	 */
 	public FileSetMelodiesProvider(String textMelodiesFolder) {
 		super();
 		this.textMelodiesFolder = textMelodiesFolder;
@@ -83,6 +95,20 @@ public class FileSetMelodiesProvider implements MelodySetProvider {
 		return (melodies);
 	}
 
+	/**
+	 * Provide set of melodies.
+	 * 
+	 * @param size
+	 *            Number of melodies.
+	 * 
+	 * @return Set of melodies.
+	 * 
+	 * @author Todor Balabanov
+	 * 
+	 * @email todor.balabanov@gmail.com
+	 * 
+	 * @date 11 Nov 2015
+	 */
 	@Override
 	public Vector<Melody> provide(int size) {
 		return provide();

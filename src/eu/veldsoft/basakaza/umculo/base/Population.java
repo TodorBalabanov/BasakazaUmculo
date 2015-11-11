@@ -25,9 +25,10 @@ package eu.veldsoft.basakaza.umculo.base;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Vector;
 
 /**
@@ -88,6 +89,11 @@ public class Population implements Cloneable, Serializable {
 	 * Handle to the melody which is playing.
 	 */
 	private Melody melodyPaying = null;
+
+	/**
+	 * Melodies comparator according their fitness value.
+	 */
+	private Comparator<Melody> comparator = new MelodyScoreComparator<Melody>();
 
 	/**
 	 * Constructor without parameters. Internal structure is created during
@@ -265,25 +271,7 @@ public class Population implements Cloneable, Serializable {
 	 * @date 22 May 2014
 	 */
 	public void sort() {
-		Melody a, b;
-		boolean done = false;
-
-		while (done == false) {
-			done = true;
-
-			for (int i = 0; i < offspring.size() - 1; i++) {
-				a = offspring.elementAt(i);
-				b = offspring.elementAt(i + 1);
-
-				if (a.getScore() < b.getScore()) {
-					offspring.removeElementAt(i);
-					offspring.insertElementAt(b, i);
-					offspring.removeElementAt(i + 1);
-					offspring.insertElementAt(a, i + 1);
-					done = false;
-				}
-			}
-		}
+		Collections.sort(offspring, comparator);
 	}
 
 	/**

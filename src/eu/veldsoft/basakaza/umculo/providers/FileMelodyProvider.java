@@ -51,8 +51,28 @@ import eu.veldsoft.basakaza.umculo.base.Note;
  * @date 29 May 2014
  */
 class FileMelodyProvider implements MelodyProvider {
+	/**
+	 * Name of the file with input information.
+	 */
 	private String fileName = "";
 
+	/**
+	 * Parse note from text to object.
+	 * 
+	 * @param string
+	 *            Note as text.
+	 * 
+	 * @return Note as object.
+	 * 
+	 * @throws NotValidDescriptorFileException
+	 *             Wrong input data.
+	 * 
+	 * @author Todor Balabanov
+	 * 
+	 * @email todor.balabanov@gmail.com
+	 * 
+	 * @date 11 Nov 2015
+	 */
 	private static Note parseNote(String string) throws NotValidDescriptorFileException {
 		String token = string;
 
@@ -145,6 +165,18 @@ class FileMelodyProvider implements MelodyProvider {
 		return (new Note(note, 0, duration, 64));
 	}
 
+	/**
+	 * Constructor with parameter of input file.
+	 * 
+	 * @param fileName
+	 *            Name of the input file.
+	 * 
+	 * @author Todor Balabanov
+	 * 
+	 * @email todor.balabanov@gmail.com
+	 * 
+	 * @date 29 May 2014
+	 */
 	public FileMelodyProvider(String fileName) {
 		super();
 		this.fileName = fileName;

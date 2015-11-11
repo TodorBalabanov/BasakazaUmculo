@@ -33,16 +33,13 @@ import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 
+import javax.sound.midi.Sequencer;
 import javax.swing.JApplet;
 import javax.swing.JFrame;
 
 import eu.veldsoft.basakaza.umculo.base.Note;
 import eu.veldsoft.basakaza.umculo.common.MIDIDERMIInterface;
 import eu.veldsoft.basakaza.umculo.common.MIDIDERMITask;
-
-import javax.sound.midi.MidiSystem;
-import javax.sound.midi.Sequence;
-import javax.sound.midi.Sequencer;
 
 
 /**

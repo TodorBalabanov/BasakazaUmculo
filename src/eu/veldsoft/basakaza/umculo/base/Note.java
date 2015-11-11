@@ -192,11 +192,13 @@ public class Note implements Cloneable, Serializable {
 	 * @date 22 May 2014
 	 */
 	public void setDuration(int duration) {
-		if (duration < MIN_RANDOM_DURATION)
+		if (duration < MIN_RANDOM_DURATION) {
 			duration = MIN_RANDOM_DURATION;
+		}
 
-		if (duration > MAX_RANDOM_DURATION)
+		if (duration > MAX_RANDOM_DURATION) {
 			duration = MAX_RANDOM_DURATION;
+		}
 
 		this.duration = duration;
 	}
@@ -303,11 +305,13 @@ public class Note implements Cloneable, Serializable {
 	 * @date 22 May 2014
 	 */
 	public void setVelocity(int velocity) {
-		if (velocity < MIN_RANDOM_VELOCITY)
+		if (velocity < MIN_RANDOM_VELOCITY) {
 			velocity = MIN_RANDOM_VELOCITY;
+		}
 
-		if (velocity > MAX_RANDOM_VELOCITY)
+		if (velocity > MAX_RANDOM_VELOCITY) {
 			velocity = MAX_RANDOM_VELOCITY;
+		}
 
 		this.velocity = velocity;
 	}
@@ -330,11 +334,13 @@ public class Note implements Cloneable, Serializable {
 			return (false);
 		}
 
-		if (note == null)
+		if (note == null) {
 			return (false);
+		}
 
-		if (this.note != note.note || this.offset != note.offset || this.duration != note.duration || this.velocity != note.velocity)
+		if (this.note != note.note || this.offset != note.offset || this.duration != note.duration || this.velocity != note.velocity) {
 			return (false);
+		}
 
 		return (true);
 	}

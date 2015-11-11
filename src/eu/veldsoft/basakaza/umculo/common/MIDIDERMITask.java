@@ -23,7 +23,6 @@
 
 package eu.veldsoft.basakaza.umculo.common;
 
-import java.awt.Graphics;
 import java.io.Serializable;
 
 import eu.veldsoft.basakaza.umculo.base.Population;
