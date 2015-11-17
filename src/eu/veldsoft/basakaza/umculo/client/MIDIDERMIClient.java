@@ -27,20 +27,25 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
+import java.util.Vector;
 
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequence;
 import javax.sound.midi.Sequencer;
 import javax.swing.JApplet;
 import javax.swing.JFrame;
 
+import eu.veldsoft.basakaza.umculo.base.Melody;
 import eu.veldsoft.basakaza.umculo.base.Note;
 import eu.veldsoft.basakaza.umculo.common.MIDIDERMIInterface;
 import eu.veldsoft.basakaza.umculo.common.MIDIDERMITask;
-
 
 /**
  * RMI client luncher. All remote side calculations are done here. This class is
@@ -84,7 +89,8 @@ public class MIDIDERMIClient extends JApplet implements KeyListener, Runnable {
 				if (graphics != null && sequencer != null && sequencer.isRunning() == true) {
 					double position = (double) sequencer.getMicrosecondPosition() / (double) sequencer.getMicrosecondLength();
 
-					Note note = Note.provideRandom(); //TODO melodyPaying.getNoteOn(position);
+					Note note = Note.provideRandom(); // TODO
+														// melodyPaying.getNoteOn(position);
 
 					if (note != null) {
 						int red = graphics.getColor().getRed();
@@ -118,12 +124,17 @@ public class MIDIDERMIClient extends JApplet implements KeyListener, Runnable {
 			}
 		}
 	}
-	
+
 	/**
 	 * Default serial version uid.
 	 */
 	private static final long serialVersionUID = 1L;
-	
+
+	/**
+	 * Time to sleep before next melody in milliseconds.
+	 */
+	private static long TIME_BEFORE_NEXT_MELODY = 500;
+
 	/**
 	 * Graphic context.
 	 */
@@ -154,10 +165,10 @@ public class MIDIDERMIClient extends JApplet implements KeyListener, Runnable {
 	 * @date 26 May 2014
 	 */
 	private void perform() {
-		if(task != null) {
+		if (task != null) {
 			return;
 		}
-		
+
 		try {
 			task = simpleServerObject.request();
 		} catch (RemoteException ex) {
@@ -291,6 +302,39 @@ public class MIDIDERMIClient extends JApplet implements KeyListener, Runnable {
 		try {
 			simpleServerObject.response(task);
 		} catch (RemoteException ex) {
+			ex.printStackTrace();
+		}
+
+		Vector<Melody> melodies = task.getPopulation().getMelodies();
+
+		/*
+		 * Play and visualize melody.
+		 */
+		try {
+			for (Melody melody : melodies) {
+				task.getPopulation().setMelodyPaying(melody);
+
+				sequencer = MidiSystem.getSequencer();
+				ByteArrayInputStream bai = new ByteArrayInputStream(melody.toByteArray());
+				Sequence sequence = MidiSystem.getSequence(new DataInputStream(bai));
+
+				sequencer.open();
+				sequencer.setSequence(sequence);
+
+				Painter painter = new Painter();
+				painter.start();
+				sequencer.start();
+
+				Thread.sleep(sequencer.getMicrosecondLength() / 1000);
+				Thread.sleep(TIME_BEFORE_NEXT_MELODY);
+
+				sequencer.stop();
+				sequencer.close();
+				painter.interrupt();
+
+				sequencer = null;
+			}
+		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
 

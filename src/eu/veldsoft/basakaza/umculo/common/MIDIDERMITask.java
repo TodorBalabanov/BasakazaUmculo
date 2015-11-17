@@ -77,6 +77,21 @@ public class MIDIDERMITask implements Serializable {
 	}
 
 	/**
+	 * Melodies population getter.
+	 * 
+	 * @return Population of melodies.
+	 * 
+	 * @author Todor Balabanov
+	 * 
+	 * @email todor.balabanov@gmail.com
+	 * 
+	 * @date 17 Nov 2015
+	 */
+	public Population getPopulation() {
+		return population;
+	}
+
+	/**
 	 * Remote side calculations. Executes DE evolution process for given number
 	 * of epochs.
 	 * 

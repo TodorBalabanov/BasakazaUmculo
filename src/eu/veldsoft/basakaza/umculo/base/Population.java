@@ -23,9 +23,6 @@
 
 package eu.veldsoft.basakaza.umculo.base;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
@@ -49,11 +46,6 @@ public class Population implements Cloneable, Serializable {
 	 * Default serial version uid.
 	 */
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Time to sleep before next melody in milliseconds.
-	 */
-	private static long TIME_BEFORE_NEXT_MELODY = 500;
 
 	/**
 	 * Min population size for random generation.
@@ -112,6 +104,22 @@ public class Population implements Cloneable, Serializable {
 	}
 
 	/**
+	 * Current playing melody setter.
+	 * 
+	 * @param melodyPaying
+	 *            Reference to the melody which plays at a specific moment.
+	 * 
+	 * @author Todor Balabanov
+	 * 
+	 * @email todor.balabanov@gmail.com
+	 * 
+	 * @date 17 Nov 2015
+	 */
+	public void setMelodyPaying(Melody melodyPaying) {
+		this.melodyPaying = melodyPaying;
+	}
+
+	/**
 	 * Population size getter.
 	 * 
 	 * @return Population size without new generation.
@@ -154,12 +162,7 @@ public class Population implements Cloneable, Serializable {
 	 * @date 22 May 2014
 	 */
 	public Vector<Melody> getMelodies() {
-		Vector<Melody> melodies = new Vector<Melody>();
-
-		for (int i = 0; i < offspring.size(); i++)
-			melodies.add((Melody) (offspring.elementAt(i)).clone());
-
-		return (melodies);
+		return offspring;
 	}
 
 	/**
@@ -198,65 +201,6 @@ public class Population implements Cloneable, Serializable {
 			melody.setId(offspring.size());
 
 			offspring.add(melody);
-		}
-	}
-
-	/**
-	 * Determine the fitness function for each chromosome by creating a MIDI
-	 * stream and evaluating from the user.
-	 * 
-	 * @author Todor Balabanov
-	 * 
-	 * @email todor.balabanov@gmail.com
-	 * 
-	 * @date 22 May 2014
-	 */
-	public void evaluate() {
-		for (int j = 0; j < offspring.size(); j++) {
-			melodyPaying = offspring.elementAt(j);
-
-			ByteArrayOutputStream bao = new ByteArrayOutputStream();
-			DataOutputStream out = new DataOutputStream(bao);
-			byte[] bytes = null;
-			try {
-				char[] chars = melodyPaying.toMidiBytes();
-				for (int i = 0; i < chars.length; i++) {
-					out.write(chars[i]);
-				}
-				out.flush();
-				bytes = bao.toByteArray();
-				bao.close();
-			} catch (Exception ex) {
-				ex.printStackTrace();
-			}
-
-			System.out.println(melodyPaying);
-
-			ByteArrayInputStream bai = new ByteArrayInputStream(bytes);
-
-			//TODO Play and visualize melody.
-//			try {
-//				sequencer = MidiSystem.getSequencer();
-//				Sequence sequence = MidiSystem.getSequence(new DataInputStream(bai));
-//
-//				sequencer.open();
-//				sequencer.setSequence(sequence);
-//
-//				Painter painter = new Painter();
-//				painter.start();
-//				sequencer.start();
-//
-//				Thread.sleep(sequencer.getMicrosecondLength() / 1000);
-//				Thread.sleep(TIME_BEFORE_NEXT_MELODY);
-//
-//				sequencer.stop();
-//				sequencer.close();
-//				painter.interrupt();
-//
-//				sequencer = null;
-//			} catch (Exception ex) {
-//				ex.printStackTrace();
-//			}
 		}
 	}
 
@@ -307,7 +251,6 @@ public class Population implements Cloneable, Serializable {
 	public void epoches(int number) {
 		for (int i = 0; i < number; i++) {
 			recombine();
-			evaluate();
 			sort();
 			shrink();
 		}

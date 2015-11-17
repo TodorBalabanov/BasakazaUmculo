@@ -23,6 +23,8 @@
 
 package eu.veldsoft.basakaza.umculo.base;
 
+import java.io.ByteArrayOutputStream;
+import java.io.DataOutputStream;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.Comparator;
@@ -52,7 +54,7 @@ public class Melody implements Cloneable, Serializable {
 	 * Notes should be in proper order according offset of the beginning.
 	 */
 	private Comparator<Note> comparator = new NoteOffsetComparator<Note>();
-	
+
 	/**
 	 * Sequence of music notes.
 	 */
@@ -505,6 +507,36 @@ public class Melody implements Cloneable, Serializable {
 			note.setVelocity(note.getVelocity() + differential[i % differential.length][3]);
 			note = null;
 		}
+	}
+
+	/**
+	 * Convert melody to byte array.
+	 * 
+	 * @return Byte array.
+	 * 
+	 * @author Todor Balabanov
+	 * 
+	 * @email todor.balabanov@gmail.com
+	 * 
+	 * @date 17 Nov 2015
+	 */
+	public byte[] toByteArray() {
+		ByteArrayOutputStream bao = new ByteArrayOutputStream();
+		DataOutputStream out = new DataOutputStream(bao);
+		byte[] bytes = null;
+		try {
+			char[] chars = toMidiBytes();
+			for (int i = 0; i < chars.length; i++) {
+				out.write(chars[i]);
+			}
+			out.flush();
+			bytes = bao.toByteArray();
+			bao.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		return bytes;
 	}
 
 	/**
